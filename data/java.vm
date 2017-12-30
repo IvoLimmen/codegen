@@ -5,7 +5,7 @@ package $options["java.package"];
  * ${propertySet.description}
  */
 #end
-public class $propertySet.name {
+public class $converter.getObject($propertySet.name) {
 
 #foreach( $p in $propertySet.properties)
    #if ($p.description)
@@ -19,15 +19,19 @@ public class $propertySet.name {
 #end
 
 #foreach( $p in $propertySet.properties)    
-   public $p.type get${p.name}() {
+   #set($name = $converter.getObject($p.name))
+   public $p.type get${name}() {
       return this.${p.name};
    }
+
 #end
 
 #foreach( $p in $propertySet.properties)    
-   public void set${p.name}(${p.type} ${p.name}) {
+   #set($name = $converter.getObject($p.name))
+   public void set${name}(${p.type} ${p.name}) {
       this.${p.name} = ${p.name};
    }
+
 #end
 }
     

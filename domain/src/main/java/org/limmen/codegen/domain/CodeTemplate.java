@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class CodeTemplate {
 
+   private String converterClassName;
+
    private String extention;
 
    private String fileName;
@@ -17,6 +19,10 @@ public class CodeTemplate {
 
    public void addOption(String key, String value) {
       this.options.put(key, value);
+   }
+
+   public String getConverterClassName() {
+      return converterClassName;
    }
 
    public String getExtention() {
@@ -33,6 +39,10 @@ public class CodeTemplate {
 
    public boolean isFilePerSet() {
       return filePerSet;
+   }
+
+   public void setConverterClassName(String converterClassName) {
+      this.converterClassName = converterClassName;
    }
 
    public void setExtention(String extention) {

@@ -18,13 +18,15 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.limmen.codegen.domain.CodeTemplate;
 import org.limmen.codegen.domain.Metadata;
+import org.limmen.codegen.domain.naming.Converter;
+import org.limmen.codegen.domain.naming.DefaultConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main {
 
    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-   
+
    private final Settings settings;
 
    public static void main(String[] args) throws Exception {
@@ -59,13 +61,16 @@ public class Main {
       LOGGER.info("Executing template '{}'...", codeTemplate.getFileName());
 
       LOGGER.debug("Options '{}'...", codeTemplate.getOptions());
-      
+
       Template template = Velocity.getTemplate(codeTemplate.getFileName());
+
+      Converter converter = getConverter(codeTemplate);
 
       VelocityContext context = new VelocityContext();
       context.put("metadata", metadata);
       context.put("template", codeTemplate);
       context.put("options", codeTemplate.getOptions());
+      context.put("converter", converter);
 
       if (codeTemplate.isFilePerSet()) {
          metadata.getPropertySets().forEach(ps -> {
@@ -73,7 +78,7 @@ public class Main {
             StringWriter sw = new StringWriter();
             template.merge(context, sw);
 
-            writeFile(this.settings.getOutputFile(ps.getName(), codeTemplate.getExtention()), sw);
+            writeFile(this.settings.getOutputFile(converter.getObject(ps.getName()), codeTemplate.getExtention()), sw);
          });
       } else {
          StringWriter sw = new StringWriter();
@@ -85,7 +90,7 @@ public class Main {
 
    private void writeFile(String fileName, StringWriter data) {
       Path file = Paths.get(fileName);
-      
+
       try {
          Files.createDirectories(file.getParent());
 
@@ -95,14 +100,33 @@ public class Main {
              StandardOpenOption.CREATE);
       }
       catch (IOException ex) {
-         ex.printStackTrace();
+         LOGGER.error("Failed to write file! File={}", fileName, ex);
       }
    }
 
+   private Converter getConverter(CodeTemplate codeTemplate) {
+      if (codeTemplate.getConverterClassName() != null) {
+         try {
+            return (Converter) Class.forName(codeTemplate.getConverterClassName()).newInstance();
+         }
+         catch (Exception ex) {
+            LOGGER.error("Failed to create converter: {}", codeTemplate.getConverterClassName(), ex);
+         }
+      }
+
+      return new DefaultConverter();
+   }
+
    private Metadata readMetadata(String file) throws JAXBException {
-      JAXBContext context = JAXBContext.newInstance(Metadata.class);
-      Unmarshaller unmarshaller = context.createUnmarshaller();
-      JAXBElement<Metadata> element = unmarshaller.unmarshal(new StreamSource(new File(file)), Metadata.class);
-      return element.getValue();
+      try {
+         JAXBContext context = JAXBContext.newInstance(Metadata.class);
+         Unmarshaller unmarshaller = context.createUnmarshaller();
+         JAXBElement<Metadata> element = unmarshaller.unmarshal(new StreamSource(new File(file)), Metadata.class);
+         return element.getValue();
+      }
+      catch (JAXBException je) {
+         LOGGER.error("Failed to parse metadata file '{}'", file, je);
+         throw je;
+      }
    }
 }

@@ -11,7 +11,8 @@ comment on table $ps.name is '$ps.description';
 #end
 #foreach( $p in $ps.properties)
 #if ( $p.description )
-comment on table ${ps.name}.${p.name} is '${p.description}';
+#set( $name = "${ps.name}.${p.name}" ) 
+comment on table ${name} is '${p.description}';
 #end
 #end
 

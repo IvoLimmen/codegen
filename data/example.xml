@@ -8,6 +8,7 @@
       <options/>
    </codeTemplates>
    <codeTemplates>
+      <converterClassName>org.limmen.codegen.domain.naming.JavaConverter</converterClassName>
       <extention>java</extention>
       <fileName>java.vm</fileName>
       <filePerSet>true</filePerSet>
@@ -22,13 +23,13 @@
       <name>person</name>
       <description>Properties belonging to a person</description>
       <properties>
-         <name>firstName</name>
+         <name>first_name</name>
          <required>false</required>
          <type>String</type>
          <description>Firstname of the person</description>
       </properties>
       <properties>
-         <name>lastName</name>
+         <name>last_name</name>
          <required>true</required>
          <type>String</type>
          <description>Lastename of the person</description>

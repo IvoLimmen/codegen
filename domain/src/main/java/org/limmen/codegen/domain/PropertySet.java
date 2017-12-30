@@ -13,7 +13,7 @@ public class PropertySet {
    private String name;
 
    private List<Property> properties = new ArrayList<>();
-
+   
    public void addProperty(Property property) {
       this.properties.add(property);
    }
