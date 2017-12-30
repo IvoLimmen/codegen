@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+   <parent>
+      <groupId>org.limmen.codegen</groupId>
+      <artifactId>codegen</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+   </parent>
+   <artifactId>cli</artifactId>
+   <packaging>jar</packaging>
+   <name>CodeGen - CLI</name>
+    
+   <dependencies>
+      <dependency>
+         <groupId>${project.groupId}</groupId>
+         <artifactId>domain</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+       
+      <dependency>
+         <groupId>org.apache.velocity</groupId>
+         <artifactId>velocity-engine-core</artifactId>
+      </dependency>
+      
+      <!-- Logging -->
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+      </dependency>			
+      <dependency>
+         <groupId>ch.qos.logback</groupId>
+         <artifactId>logback-core</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>ch.qos.logback</groupId>
+         <artifactId>logback-classic</artifactId>
+      </dependency>               
+   </dependencies>
+   
+   <build>
+      <resources>
+         <resource>
+            <directory>../data</directory>
+         </resource>
+         <resource>
+            <directory>src/main/resources</directory>
+         </resource>
+      </resources>
+      <plugins>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>java</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <mainClass>org.limmen.codegen.cli.Main</mainClass>
+            </configuration>
+         </plugin>         
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>appassembler-maven-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>script</id>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>assemble</goal>                     
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <repositoryLayout>flat</repositoryLayout>
+               <repositoryName>lib</repositoryName>
+               <configurationDirectory>data</configurationDirectory>
+               <configurationSourceDirectory>../data</configurationSourceDirectory>
+               <copyConfigurationDirectory>true</copyConfigurationDirectory>
+               <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+               <extraJvmArguments>-Xms128m</extraJvmArguments>
+               <platforms>
+                  <platform>windows</platform>
+                  <platform>unix</platform>
+               </platforms>               
+               <programs>
+                  <program>
+                     <mainClass>org.limmen.codegen.cli.Main</mainClass>
+                     <id>codegen</id>
+                  </program>
+               </programs>
+            </configuration>
+         </plugin>                     
+      </plugins>
+   </build>
+</project>

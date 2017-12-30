@@ -1,0 +1,18 @@
+#foreach( $ps in $metadata.propertySets )
+
+create table $ps.name (
+#foreach( $p in $ps.properties)
+    $p.name $p.type,
+#end
+);
+
+#if ( $ps.description )
+comment on table $ps.name is '$ps.description';
+#end
+#foreach( $p in $ps.properties)
+#if ( $p.description )
+comment on table ${ps.name}.${p.name} is '${p.description}';
+#end
+#end
+
+#end

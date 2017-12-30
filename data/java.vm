@@ -1,0 +1,33 @@
+package $options["java.package"];
+
+#if ($propertySet.description)
+/**
+ * ${propertySet.description}
+ */
+#end
+public class $propertySet.name {
+
+#foreach( $p in $propertySet.properties)
+   #if ($p.description)
+   /**
+    * ${p.description}
+    */
+   #end
+   @Column(name = "$p.name")
+   private $p.type $p.name;
+
+#end
+
+#foreach( $p in $propertySet.properties)    
+   public $p.type get${p.name}() {
+      return this.${p.name};
+   }
+#end
+
+#foreach( $p in $propertySet.properties)    
+   public void set${p.name}(${p.type} ${p.name}) {
+      this.${p.name} = ${p.name};
+   }
+#end
+}
+    

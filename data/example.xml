@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata>
+   <name>test</name>
+   <codeTemplates>
+      <extention>sql</extention>
+      <fileName>sql.vm</fileName>
+      <filePerSet>false</filePerSet>
+      <options/>
+   </codeTemplates>
+   <codeTemplates>
+      <extention>java</extention>
+      <fileName>java.vm</fileName>
+      <filePerSet>true</filePerSet>
+      <options>
+         <entry>
+            <key>java.package</key>
+            <value>com.example.domain</value>
+         </entry>
+      </options>   
+   </codeTemplates>   
+   <propertySets>
+      <name>person</name>
+      <description>Properties belonging to a person</description>
+      <properties>
+         <name>firstName</name>
+         <required>false</required>
+         <type>String</type>
+         <description>Firstname of the person</description>
+      </properties>
+      <properties>
+         <name>lastName</name>
+         <required>true</required>
+         <type>String</type>
+         <description>Lastename of the person</description>
+      </properties>
+      <properties>
+         <name>prefix</name>
+         <required>false</required>
+         <type>String</type>
+      </properties>
+      <properties>
+         <name>birthday</name>
+         <required>false</required>
+         <type>Date</type>
+      </properties>
+   </propertySets>
+   <propertySets>
+      <name>holiday</name>
+      <properties>
+         <name>name</name>
+         <required>false</required>
+         <type>String</type>
+      </properties>
+      <properties>
+         <name>date</name>
+         <required>true</required>
+         <type>Date</type>
+      </properties>
+   </propertySets>
+</metadata>
