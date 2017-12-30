@@ -1,8 +1,12 @@
+#set( $idtype = $options["sql.id.type"] )
+
 #foreach( $ps in $metadata.propertySets )
 
 create table $ps.name (
+   id $idtype not null primary key,
 #foreach( $p in $ps.properties)
-    $p.name $p.type,
+   $p.name $p.type#if( $foreach.hasNext ), #end 
+
 #end
 );
 

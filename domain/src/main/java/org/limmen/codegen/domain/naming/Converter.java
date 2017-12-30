@@ -5,4 +5,6 @@ public interface Converter {
    String getObject(String name);
    
    String getProperty(String name);
+   
+   String getType(String name);
 }

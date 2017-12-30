@@ -1,11 +1,14 @@
 package $options["java.package"];
 
+import javax.persistence.Column;
+import java.time.*;
+
 #if ($propertySet.description)
 /**
  * ${propertySet.description}
  */
 #end
-public class $converter.getObject($propertySet.name) {
+public class $propertySet.className {
 
 #foreach( $p in $propertySet.properties)
    #if ($p.description)
@@ -14,22 +17,20 @@ public class $converter.getObject($propertySet.name) {
     */
    #end
    @Column(name = "$p.name")
-   private $p.type $p.name;
+   private $p.javaType $p.fieldName;
 
 #end
-
+// --- Getters ---
 #foreach( $p in $propertySet.properties)    
-   #set($name = $converter.getObject($p.name))
-   public $p.type get${name}() {
-      return this.${p.name};
+   public $p.javaType get${p.className}() {
+      return this.${p.fieldName};
    }
 
 #end
-
+// --- Setters ---
 #foreach( $p in $propertySet.properties)    
-   #set($name = $converter.getObject($p.name))
-   public void set${name}(${p.type} ${p.name}) {
-      this.${p.name} = ${p.name};
+   public void set${p.className}(${p.javaType} ${p.fieldName}) {
+      this.${p.fieldName} = ${p.fieldName};
    }
 
 #end

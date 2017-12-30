@@ -5,7 +5,12 @@
       <extention>sql</extention>
       <fileName>sql.vm</fileName>
       <filePerSet>false</filePerSet>
-      <options/>
+      <options>
+         <entry>
+            <key>sql.id.type</key>
+            <value>bigserial</value>
+         </entry>
+      </options>   
    </codeTemplates>
    <codeTemplates>
       <converterClassName>org.limmen.codegen.domain.naming.JavaConverter</converterClassName>
@@ -25,24 +30,24 @@
       <properties>
          <name>first_name</name>
          <required>false</required>
-         <type>String</type>
+         <type>text</type>
          <description>Firstname of the person</description>
       </properties>
       <properties>
          <name>last_name</name>
          <required>true</required>
-         <type>String</type>
+         <type>text</type>
          <description>Lastename of the person</description>
       </properties>
       <properties>
          <name>prefix</name>
          <required>false</required>
-         <type>String</type>
+         <type>text</type>
       </properties>
       <properties>
          <name>birthday</name>
          <required>false</required>
-         <type>Date</type>
+         <type>timestamp</type>
       </properties>
    </propertySets>
    <propertySets>
@@ -50,12 +55,12 @@
       <properties>
          <name>name</name>
          <required>false</required>
-         <type>String</type>
+         <type>text</type>
       </properties>
       <properties>
          <name>date</name>
          <required>true</required>
-         <type>Date</type>
+         <type>timestamp</type>
       </properties>
    </propertySets>
 </metadata>

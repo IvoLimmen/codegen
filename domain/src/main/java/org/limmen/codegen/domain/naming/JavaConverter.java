@@ -25,4 +25,19 @@ public class JavaConverter implements Converter {
       String newName = getObject(name);
       return newName.substring(0, 1).toLowerCase().concat(newName.substring(1));
    }
+
+   @Override
+   public String getType(String name) {
+      switch(name) {
+         case "timestamp":
+            return "LocalDateTime";
+         case "integer":
+         case "int32":
+            return "Integer";
+         case "int64":
+            return "Long";
+         default:
+            return "String";
+      }
+   }     
 }

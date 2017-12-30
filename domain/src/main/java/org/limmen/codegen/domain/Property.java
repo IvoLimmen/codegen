@@ -2,9 +2,14 @@ package org.limmen.codegen.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+import org.limmen.codegen.domain.naming.Converter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Property {
+
+   @XmlTransient
+   private Converter converter;
 
    private String description;
 
@@ -14,8 +19,24 @@ public class Property {
 
    private String type;
 
+   public String getClassName() {
+      return this.converter.getObject(getName());
+   }
+
+   public Converter getConverter() {
+      return converter;
+   }
+
    public String getDescription() {
       return description;
+   }
+
+   public String getFieldName() {
+      return this.converter.getProperty(getName());
+   }
+
+   public String getJavaType() {
+      return this.converter.getType(getType());
    }
 
    public String getName() {
@@ -28,6 +49,10 @@ public class Property {
 
    public boolean isRequired() {
       return required;
+   }
+
+   public void setConverter(Converter converter) {
+      this.converter = converter;
    }
 
    public void setDescription(String description) {

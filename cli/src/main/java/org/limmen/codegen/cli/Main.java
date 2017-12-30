@@ -65,7 +65,7 @@ public class Main {
       Template template = Velocity.getTemplate(codeTemplate.getFileName());
 
       Converter converter = getConverter(codeTemplate);
-
+      
       VelocityContext context = new VelocityContext();
       context.put("metadata", metadata);
       context.put("template", codeTemplate);
@@ -75,6 +75,7 @@ public class Main {
       if (codeTemplate.isFilePerSet()) {
          metadata.getPropertySets().forEach(ps -> {
             context.put("propertySet", ps);
+            ps.setConverter(converter);
             StringWriter sw = new StringWriter();
             template.merge(context, sw);
 
