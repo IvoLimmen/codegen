@@ -1,0 +1,13 @@
+package $options["java.package"];
+
+/**
+ * Example support class for Java.
+ * For :${metadata.name}.
+ */
+public abstract class SomeBaseClass {
+
+   protected String getSomething() {
+      return "${metadata.name}";
+   }
+}
+    

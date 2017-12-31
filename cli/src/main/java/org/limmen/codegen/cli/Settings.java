@@ -1,6 +1,9 @@
 package org.limmen.codegen.cli;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Settings {
 
@@ -34,6 +37,22 @@ public class Settings {
       baseDir = new File(baseDir, name + "." + ext);
 
       return baseDir.getAbsolutePath();
+   }
+
+   public String getSupportFile(String template, String fileName) {
+      return "support" + File.separator + template + File.separator + fileName;
+   }
+
+   public List<String> getSupportFiles(String template) {
+      File baseDir = new File(getTemplateDir());
+      baseDir = new File(baseDir, "support");
+      baseDir = new File(baseDir, template);
+
+      String[] files = baseDir.list();
+      if (files != null && files.length > 0) {
+         return Arrays.asList(files);
+      }
+      return Collections.EMPTY_LIST;
    }
 
    public String getTemplateDir() {

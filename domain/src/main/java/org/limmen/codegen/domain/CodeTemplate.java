@@ -15,6 +15,8 @@ public class CodeTemplate {
 
    private boolean filePerSet;
 
+   private String name;
+
    private Map<String, String> options = new HashMap<>();
 
    public void addOption(String key, String value) {
@@ -31,6 +33,10 @@ public class CodeTemplate {
 
    public String getFileName() {
       return fileName;
+   }
+
+   public String getName() {
+      return name;
    }
 
    public Map<String, String> getOptions() {
@@ -55,6 +61,10 @@ public class CodeTemplate {
 
    public void setFilePerSet(boolean filePerSet) {
       this.filePerSet = filePerSet;
+   }
+
+   public void setName(String name) {
+      this.name = name;
    }
 
    public void setOptions(Map<String, String> options) {

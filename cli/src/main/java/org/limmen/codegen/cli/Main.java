@@ -27,8 +27,6 @@ public class Main {
 
    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-   private final Settings settings;
-
    public static void main(String[] args) throws Exception {
 
       if (args == null || args.length == 0) {
@@ -42,6 +40,7 @@ public class Main {
 
       new Main(settings);
    }
+   private final Settings settings;
 
    public Main(Settings settings) throws JAXBException, IOException {
       this.settings = settings;
@@ -58,14 +57,14 @@ public class Main {
    }
 
    private void executeTemplate(CodeTemplate codeTemplate, Metadata metadata) {
-      LOGGER.info("Executing template '{}'...", codeTemplate.getFileName());
+      LOGGER.info("Executing template '{}'...", codeTemplate.getName());
 
       LOGGER.debug("Options '{}'...", codeTemplate.getOptions());
 
       Template template = Velocity.getTemplate(codeTemplate.getFileName());
 
       Converter converter = getConverter(codeTemplate);
-      
+
       VelocityContext context = new VelocityContext();
       context.put("metadata", metadata);
       context.put("template", codeTemplate);
@@ -87,22 +86,16 @@ public class Main {
 
          writeFile(this.settings.getOutputFile(metadata.getName(), codeTemplate.getExtention()), sw);
       }
-   }
 
-   private void writeFile(String fileName, StringWriter data) {
-      Path file = Paths.get(fileName);
+      // find and execute the support files.
+      settings.getSupportFiles(codeTemplate.getName()).forEach(s -> {
+         Template tpl = Velocity.getTemplate(settings.getSupportFile(codeTemplate.getName(), s));
 
-      try {
-         Files.createDirectories(file.getParent());
+         StringWriter sw = new StringWriter();
+         tpl.merge(context, sw);
 
-         Files.write(
-             file,
-             data.getBuffer().toString().getBytes(),
-             StandardOpenOption.CREATE);
-      }
-      catch (IOException ex) {
-         LOGGER.error("Failed to write file! File={}", fileName, ex);
-      }
+         writeFile(this.settings.getOutputFile(getSupportFileName(s), codeTemplate.getExtention()), sw);
+      });
    }
 
    private Converter getConverter(CodeTemplate codeTemplate) {
@@ -118,6 +111,13 @@ public class Main {
       return new DefaultConverter();
    }
 
+   private String getSupportFileName(String fileName) {
+      if (fileName.endsWith(".vm")) {
+         fileName = fileName.substring(0, fileName.length() - 3);
+      }
+      return fileName;
+   }
+
    private Metadata readMetadata(String file) throws JAXBException {
       try {
          JAXBContext context = JAXBContext.newInstance(Metadata.class);
@@ -128,6 +128,22 @@ public class Main {
       catch (JAXBException je) {
          LOGGER.error("Failed to parse metadata file '{}'", file, je);
          throw je;
+      }
+   }
+
+   private void writeFile(String fileName, StringWriter data) {
+      Path file = Paths.get(fileName);
+
+      try {
+         Files.createDirectories(file.getParent());
+
+         Files.write(
+             file,
+             data.getBuffer().toString().getBytes(),
+             StandardOpenOption.CREATE);
+      }
+      catch (IOException ex) {
+         LOGGER.error("Failed to write file! File={}", fileName, ex);
       }
    }
 }

@@ -2,8 +2,9 @@
 <metadata>
    <name>test</name>
    <codeTemplates>
+      <name>postgresql</name>
       <extention>sql</extention>
-      <fileName>sql.vm</fileName>
+      <fileName>postgresql.vm</fileName>
       <filePerSet>false</filePerSet>
       <options>
          <entry>
@@ -13,9 +14,10 @@
       </options>   
    </codeTemplates>
    <codeTemplates>
+      <name>jpa</name>
       <converterClassName>org.limmen.codegen.domain.naming.JavaConverter</converterClassName>
       <extention>java</extention>
-      <fileName>java.vm</fileName>
+      <fileName>java-jpa.vm</fileName>
       <filePerSet>true</filePerSet>
       <options>
          <entry>
