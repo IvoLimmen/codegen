@@ -29,40 +29,40 @@
    <propertySets>
       <name>person</name>
       <description>Properties belonging to a person</description>
-      <properties>
+      <property>
          <name>first_name</name>
          <required>false</required>
          <type>text</type>
          <description>Firstname of the person</description>
-      </properties>
-      <properties>
+      </property>
+      <property>
          <name>last_name</name>
          <required>true</required>
          <type>text</type>
          <description>Lastename of the person</description>
-      </properties>
-      <properties>
+      </property>
+      <property>
          <name>prefix</name>
          <required>false</required>
          <type>text</type>
-      </properties>
-      <properties>
+      </property>
+      <property>
          <name>birthday</name>
          <required>false</required>
          <type>timestamp</type>
-      </properties>
+      </property>
    </propertySets>
    <propertySets>
       <name>holiday</name>
-      <properties>
+      <property>
          <name>name</name>
          <required>false</required>
          <type>text</type>
-      </properties>
-      <properties>
+      </property>
+      <property>
          <name>date</name>
          <required>true</required>
          <type>timestamp</type>
-      </properties>
+      </property>
    </propertySets>
 </metadata>

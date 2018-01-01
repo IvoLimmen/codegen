@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.limmen.codegen.domain.naming.Converter;
 
@@ -17,6 +18,7 @@ public class PropertySet {
 
    private String name;
 
+   @XmlElement(name = "property")
    private List<Property> properties = new ArrayList<>();
 
    public void addProperty(Property property) {
@@ -31,7 +33,7 @@ public class PropertySet {
       return description;
    }
 
-   public String getJavaName() {
+   public String getClassName() {
       return this.converter.getObject(getName());
    }
 
