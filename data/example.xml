@@ -51,6 +51,11 @@
          <required>false</required>
          <type>timestamp</type>
       </property>
+      <property>
+         <name>holiday</name>
+         <required>false</required>
+         <type>holiday</type>
+      </property>
    </propertySets>
    <propertySets>
       <name>holiday</name>

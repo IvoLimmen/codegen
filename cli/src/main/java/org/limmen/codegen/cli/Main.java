@@ -46,6 +46,8 @@ public class Main {
       this.settings = settings;
       Metadata metadata = readMetadata(settings.getFile());
 
+      metadata.init();
+      
       Properties properties = new Properties();
       properties.put(Velocity.RESOURCE_LOADER, "file");
       properties.put(Velocity.FILE_RESOURCE_LOADER_PATH, settings.getTemplateDir());

@@ -16,13 +16,21 @@ public class PropertySet {
 
    private String description;
 
+   @XmlTransient
+   private Metadata metadata;
+
    private String name;
 
    @XmlElement(name = "property")
    private List<Property> properties = new ArrayList<>();
 
    public void addProperty(Property property) {
+      property.setPropertySet(this);
       this.properties.add(property);
+   }
+
+   public String getClassName() {
+      return this.converter.getObject(getName());
    }
 
    public Converter getConverter() {
@@ -33,8 +41,8 @@ public class PropertySet {
       return description;
    }
 
-   public String getClassName() {
-      return this.converter.getObject(getName());
+   public Metadata getMetadata() {
+      return metadata;
    }
 
    public String getName() {
@@ -43,6 +51,10 @@ public class PropertySet {
 
    public List<Property> getProperties() {
       return properties;
+   }
+
+   public void init() {
+      this.properties.forEach(p -> p.setPropertySet(this));
    }
 
    public void setConverter(Converter converter) {
@@ -54,11 +66,16 @@ public class PropertySet {
       this.description = description;
    }
 
+   public void setMetadata(Metadata metadata) {
+      this.metadata = metadata;
+   }
+
    public void setName(String name) {
       this.name = name;
    }
 
    public void setProperties(List<Property> properties) {
       this.properties = properties;
+      this.properties.forEach(p -> p.setPropertySet(this));
    }
 }

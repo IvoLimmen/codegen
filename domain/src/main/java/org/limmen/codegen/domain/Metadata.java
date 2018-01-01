@@ -16,11 +16,17 @@ public class Metadata {
 
    private List<PropertySet> propertySets = new ArrayList<>();
 
+   public void init() {
+      this.propertySets.forEach(p -> p.setMetadata(this));
+      this.propertySets.forEach(p -> p.init());
+   }
+   
    public void addCodeTemplate(CodeTemplate codeTemplate) {
       this.codeTemplates.add(codeTemplate);
    }
 
    public void addPropertySet(PropertySet propertySet) {
+      propertySet.setMetadata(this);
       this.propertySets.add(propertySet);
    }
 
@@ -30,6 +36,13 @@ public class Metadata {
 
    public String getName() {
       return name;
+   }
+
+   public PropertySet getPropertySetByName(String name) {
+      return this.propertySets.stream()
+          .filter(f -> f.getName().equalsIgnoreCase(name))
+          .findFirst()
+          .orElse(null);
    }
 
    public List<PropertySet> getPropertySets() {
@@ -46,5 +59,6 @@ public class Metadata {
 
    public void setPropertySets(List<PropertySet> propertySets) {
       this.propertySets = propertySets;
+      this.propertySets.forEach(p -> p.setMetadata(this));
    }
 }

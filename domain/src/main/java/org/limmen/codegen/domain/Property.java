@@ -15,6 +15,9 @@ public class Property {
 
    private String name;
 
+   @XmlTransient
+   private PropertySet propertySet;
+
    private boolean required;
 
    private String type;
@@ -36,11 +39,20 @@ public class Property {
    }
 
    public String getJavaType() {
-      return this.converter.getType(getType());
+      PropertySet ps = this.getPropertySet().getMetadata().getPropertySetByName(getType());
+      if (ps == null) {
+         return this.converter.getType(getType());
+      }
+
+      return this.converter.getObject(getType());
    }
 
    public String getName() {
       return name;
+   }
+
+   public PropertySet getPropertySet() {
+      return propertySet;
    }
 
    public String getType() {
@@ -61,6 +73,10 @@ public class Property {
 
    public void setName(String name) {
       this.name = name;
+   }
+
+   public void setPropertySet(PropertySet propertySet) {
+      this.propertySet = propertySet;
    }
 
    public void setRequired(boolean required) {
