@@ -2,17 +2,22 @@ package org.limmen.codegen.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.limmen.codegen.domain.naming.Converter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Property {
 
+   @XmlElement(defaultValue = "SINGLE", required = true)
+   private CardinalityType cardinalityType;
+
    @XmlTransient
    private Converter converter;
 
    private String description;
 
+   @XmlElement(required = true)
    private String name;
 
    @XmlTransient
@@ -21,6 +26,10 @@ public class Property {
    private boolean required;
 
    private String type;
+
+   public CardinalityType getCardinalityType() {
+      return cardinalityType;
+   }
 
    public String getClassName() {
       return this.converter.getObject(getName());
@@ -61,6 +70,10 @@ public class Property {
 
    public boolean isRequired() {
       return required;
+   }
+
+   public void setCardinalityType(CardinalityType cardinalityType) {
+      this.cardinalityType = cardinalityType;
    }
 
    public void setConverter(Converter converter) {

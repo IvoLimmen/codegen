@@ -2,6 +2,11 @@ package $options["java.package"];
 
 import javax.persistence.Column;
 import java.time.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+
 
 #if ($propertySet.description)
 /**
@@ -17,19 +22,37 @@ public class $propertySet.className {
     */
    #end
    @Column(name = "$p.name")
+#if( !${p.cardinalityType} )
    private $p.javaType $p.fieldName;
+#elseif( ${p.cardinalityType} == "LIST" )
+   private List<$p.javaType> $p.fieldName = new ArrayList<>();
+#elseif( ${p.cardinalityType} == "SET" )
+   private Set<$p.javaType> $p.fieldName = new HashSet<>();
+#end
 
 #end
 // --- Getters ---
 #foreach( $p in $propertySet.properties)    
+#if( !${p.cardinalityType} )
    public $p.javaType get${p.className}() {
+#elseif( ${p.cardinalityType} == "LIST" )
+   public List<$p.javaType> get${p.className}() {
+#elseif( ${p.cardinalityType} == "SET" )
+   public Set<$p.javaType> get${p.className}() {
+#end
       return this.${p.fieldName};
    }
 
 #end
 // --- Setters ---
 #foreach( $p in $propertySet.properties)    
+#if( !${p.cardinalityType} )
    public void set${p.className}(${p.javaType} ${p.fieldName}) {
+#elseif( ${p.cardinalityType} == "LIST" )
+   public void set${p.className}(List<${p.javaType}> ${p.fieldName}) {
+#elseif( ${p.cardinalityType} == "SET" )
+   public void set${p.className}(Set<${p.javaType}> ${p.fieldName}) {
+#end
       this.${p.fieldName} = ${p.fieldName};
    }
 

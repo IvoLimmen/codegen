@@ -3,6 +3,7 @@ package org.limmen.codegen.cli;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -103,9 +104,9 @@ public class Main {
    private Converter getConverter(CodeTemplate codeTemplate) {
       if (codeTemplate.getConverterClassName() != null) {
          try {
-            return (Converter) Class.forName(codeTemplate.getConverterClassName()).newInstance();
+            return (Converter) Class.forName(codeTemplate.getConverterClassName()).getConstructor(new Class[0]).newInstance(new Object[0]);
          }
-         catch (Exception ex) {
+         catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
             LOGGER.error("Failed to create converter: {}", codeTemplate.getConverterClassName(), ex);
          }
       }

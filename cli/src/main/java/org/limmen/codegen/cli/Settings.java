@@ -1,8 +1,8 @@
 package org.limmen.codegen.cli;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Settings {
@@ -52,7 +52,7 @@ public class Settings {
       if (files != null && files.length > 0) {
          return Arrays.asList(files);
       }
-      return Collections.EMPTY_LIST;
+      return new ArrayList<>();
    }
 
    public String getTemplateDir() {

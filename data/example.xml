@@ -55,6 +55,7 @@
          <name>holiday</name>
          <required>false</required>
          <type>holiday</type>
+         <cardinalityType>SET</cardinalityType>
       </property>
    </propertySets>
    <propertySets>
