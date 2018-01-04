@@ -2,18 +2,15 @@ package $options["java.package"];
 
 import javax.persistence.Column;
 import java.time.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-
+import java.util.*;
 
 #if ($propertySet.description)
 /**
  * ${propertySet.description}
  */
 #end
-public class $propertySet.className {
+@Entity(name = "${propertySet.name}") 
+public class ${propertySet.className} {
 
 #foreach( $p in $propertySet.properties)
    #if ($p.description)
@@ -21,18 +18,40 @@ public class $propertySet.className {
     * ${p.description}
     */
    #end
-   @Column(name = "$p.name")
 #if( !${p.cardinalityType} )
+   @Column(name = "$p.name")
    private $p.javaType $p.fieldName;
 #elseif( ${p.cardinalityType} == "LIST" )
+   @OneToMany(mappedBy = "${p.javaType}", cascade = CascadeType.ALL)
    private List<$p.javaType> $p.fieldName = new ArrayList<>();
 #elseif( ${p.cardinalityType} == "SET" )
+   @OneToMany(mappedBy = "${p.javaType}", cascade = CascadeType.ALL)
    private Set<$p.javaType> $p.fieldName = new HashSet<>();
 #end
 
 #end
-// --- Getters ---
-#foreach( $p in $propertySet.properties)    
+
+#if (${propertySet.references})
+   // --- References ---
+#end
+#foreach( $p in $propertySet.references )    
+   @ManyToOne
+   @JoinColumn(name = "${p.name}_id", nullable = false)
+   private ${p.javaType} ${p.fieldName};
+#end
+
+#if (${propertySet.relationships})
+   // --- Adders ---
+#end
+#foreach( $p in $propertySet.relationships )    
+   public void add${p.javaType}(${p.javaType} ${p.name}) {
+      ${p.name}.set${propertySet.className}(this);
+      this.${p.name}.add(${p.name});
+   }
+#end
+
+   // --- Getters ---
+#foreach( $p in $propertySet.properties )    
 #if( !${p.cardinalityType} )
    public $p.javaType get${p.className}() {
 #elseif( ${p.cardinalityType} == "LIST" )
@@ -44,7 +63,7 @@ public class $propertySet.className {
    }
 
 #end
-// --- Setters ---
+   // --- Setters ---
 #foreach( $p in $propertySet.properties)    
 #if( !${p.cardinalityType} )
    public void set${p.className}(${p.javaType} ${p.fieldName}) {
